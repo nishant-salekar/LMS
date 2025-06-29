@@ -8,12 +8,35 @@ import { AppContext } from '../../context/AppContext'
 
 const Navbar = () => {
 
-  const {navigate, isEducator} = useContext(AppContext)
+  const {navigate, isEducator, backendUrl, setIsEducator, getToken} = useContext(AppContext)
 
 const isCourseListPage = location.pathname.includes('/course-list');
 
 const {openSignIn} = useClerk()
 const {user} = useUser()
+
+const becomeEducator = async ()=>{
+    try {
+        if(isEducator){
+            navigate('/educator')
+            return;
+        }
+        const token = await getToken()
+        const { data } = await axios.get(backendUrl + '/api/educator/update-role',
+        {headers: {Authorization: `Bearer ${token}`}})
+
+        if (data.success){
+            setIsEducator(true)
+            toast.success(data.message)
+        } else {
+          toast.error(data.message)
+        }
+
+      } catch (error) {
+        toast.error(error.message)
+
+      }
+      }
 
 
 
@@ -25,7 +48,7 @@ const {user} = useUser()
     <div className='flex items-center gap-5'>
         { user && <>
           
-          <button onClick={() => {navigate('/educator')}}>{isEducator ? 'Educator Dashboard' : 'Become Educator'}</button>
+          <button onClick={becomeEducator}>{isEducator ? 'Educator Dashboard' : 'Become Educator'}</button>
         |<Link to='/my-enrollments'>
         My Enrollments
         </Link>
@@ -44,7 +67,7 @@ const {user} = useUser()
   <div>
      { user &&
      <>
-       <button onClick={() => {navigate('/educator')}}>{isEducator ? 'Educator Dashboard' : 'Become Educator'}</button>
+       <button onClick={becomeEducator}>{isEducator ? 'Educator Dashboard' : 'Become Educator'}</button>
         |<Link to='/my-enrollments'>
         My Enrollments
         </Link>
