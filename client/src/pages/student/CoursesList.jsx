@@ -5,7 +5,7 @@ import SearchBar from '../../components/student/SearchBar'
 import CourseCard from '../../components/student/CourseCard'
 import { assets } from '../../assets/assets'
 import Footer from '../../components/student/Footer'
-
+import { useNavigate } from 'react-router-dom'
 
 
 const CoursesList = () => {

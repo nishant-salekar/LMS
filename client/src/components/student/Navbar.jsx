@@ -3,7 +3,9 @@ import { assets } from '../../assets/assets'
 import { Link, Navigate } from 'react-router-dom'
 import { useClerk , UserButton, useUser } from '@clerk/clerk-react'
 import { AppContext } from '../../context/AppContext'
-
+import { useLocation } from 'react-router-dom'
+import axios from 'axios'
+import { toast } from 'react-toastify'
 
 
 const Navbar = () => {
